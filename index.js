@@ -4,5 +4,7 @@ module.exports = function(base, override) {
     return mergedObj;
   }
 
+  mergedObj = Object.assign(base, override);
+
   return mergedObj;
 };
