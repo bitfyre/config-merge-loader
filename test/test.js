@@ -3,6 +3,6 @@ var configMergeLoader = require('../index.js');
 
 describe('configMergeLoader', function() {
   it('should return an object', function() {
-    assert.equal(typeof configMergeLoader, 'object');
+    assert.equal(typeof configMergeLoader, 'function');
   });
 });
