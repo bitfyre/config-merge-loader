@@ -24,5 +24,25 @@ describe('configMergeLoader', function() {
       var mergedObj = configMergeLoader(obj, override);
       assert.deepEqual(mergedObj, { a: 2 });
     });
+
+    it('should merge deeply nested properties', function() {
+      var obj = {
+        a: 1,
+        b: { a: 1, b: 1 },
+        c: 1
+      };
+      var override = {
+        a: 2,
+        b: { a: 2 }
+      };
+
+      var mergedObj = configMergeLoader(obj, override);
+
+      assert.deepEqual(mergedObj, {
+        a: 2,
+        b: { a: 2, b: 1 },
+        c: 1
+      });
+    });
   });
 });
