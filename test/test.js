@@ -17,5 +17,12 @@ describe('configMergeLoader', function() {
         var mergedDefault = configMergeLoader(defaultObj);
         assert.equal(defaultObj, mergedDefault);
     });
+
+    it('keys from the second object should override the target', function() {
+      var obj = { a: 1 };
+      var override = { a: 2 };
+      var mergedObj = configMergeLoader(obj, override);
+      assert.deepEqual(mergedObj, { a: 2 });
+    });
   });
 });
