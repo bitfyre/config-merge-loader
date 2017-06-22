@@ -1,0 +1,18 @@
+{
+  "name": "webpack-config-merge-loader",
+  "version": "0.0.1",
+  "description": "Loader for mergeing environment specific localiztion or configuration into a base set at build time.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webpack",
+    "loader",
+    "config",
+    "locale",
+    "merge"
+  ],
+  "author": "Alex Lemanski",
+  "license": "MIT"
+}
