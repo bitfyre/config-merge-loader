@@ -1,42 +1,43 @@
-var assert = require('assert');
-var configMergeLoader = require('../index.js');
+const assert = require('assert');
+const deepMerge = require('../lib/deep-merge.js');
 
-describe('configMergeLoader', function() {
+describe('deepMerge:', function() {
   it('should return an function', function() {
-    assert.equal(typeof configMergeLoader, 'function');
+    assert.equal(typeof deepMerge, 'function');
   });
 
-  describe('the function', function() {
+  describe('The function', function() {
     it('should return an object', function() {
-      var mergedObj = configMergeLoader();
+      const mergedObj = deepMerge();
       assert.equal(typeof mergedObj, 'object');
     });
 
     it('when given only a default object, should just return that object', function() {
-        var defaultObj = { a: 1 };
-        var mergedDefault = configMergeLoader(defaultObj);
+        const defaultObj = { a: 1 };
+        const mergedDefault = deepMerge(defaultObj);
         assert.equal(defaultObj, mergedDefault);
     });
 
     it('keys from the second object should override the target', function() {
-      var obj = { a: 1 };
-      var override = { a: 2 };
-      var mergedObj = configMergeLoader(obj, override);
+      const obj = { a: 1 };
+      const override = { a: 2 };
+      const mergedObj = deepMerge(obj, override);
       assert.deepEqual(mergedObj, { a: 2 });
     });
 
     it('should merge deeply nested properties', function() {
-      var obj = {
+      const obj = {
         a: 1,
         b: { a: 1, b: 1 },
         c: 1
       };
-      var override = {
+
+      const override = {
         a: 2,
         b: { a: 2 }
       };
 
-      var mergedObj = configMergeLoader(obj, override);
+      const mergedObj = deepMerge(obj, override);
 
       assert.deepEqual(mergedObj, {
         a: 2,
