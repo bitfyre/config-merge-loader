@@ -1,3 +1,3 @@
-module.exports = () => {
-  return '';
+module.exports = (source) => {
+  return source;
 };
