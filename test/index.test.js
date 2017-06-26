@@ -16,7 +16,7 @@ describe('Config Merge Loader', function() {
 
     it('should return the same string it is given', function() {
       const loaderResult = configMergeLoader(loaderInput);
-      assert.equal(loaderResult, loaderInput);
+      assert.ok(loaderResult.indexOf(loaderInput) >= 0);
     });
   });
 });
