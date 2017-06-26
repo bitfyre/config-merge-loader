@@ -13,5 +13,10 @@ describe('Config Merge Loader', function() {
       const loaderResult = configMergeLoader(loaderInput);
       assert.equal(typeof loaderResult, 'string');
     });
+
+    it('should return the same string it is given', function() {
+      const loaderResult = configMergeLoader(loaderInput);
+      assert.equal(loaderResult, loaderInput);
+    });
   });
 });
