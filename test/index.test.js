@@ -1,6 +1,7 @@
 const assert = require('assert');
 const configMergeLoader = require('../index.js');
 const fs = require('fs');
+const path = require('path');
 const webpack = require('webpack');
 
 describe('Config Merge Loader', function() {
@@ -23,8 +24,21 @@ describe('Config Merge Loader', function() {
   });
 
   describe('when called via webapck', function() {
-    it('should generate an entry.js file', function() {
-      assert.ok(fs.existsSync('./dist/entry.js'));
+    const options = {
+      entry: path.resolve(__dirname, 'cases/test.js'),
+      output: {
+        filename: 'entry.js',
+        path: path.resolve(__dirname, 'dist')
+      }
+    };
+
+    it('should generate an entry.js file', function(done) {
+      webpack(options, function(err, stats) {
+        if(err) return done(err);
+
+        assert.ok(fs.existsSync(path.resolve(__dirname, 'dist/entry.js')));
+        done();
+      });
     });
   });
 });
