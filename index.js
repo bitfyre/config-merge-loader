@@ -1,3 +1,4 @@
 module.exports = (source) => {
-  return source;
-};
+  let result = source;
+  return result
+}
