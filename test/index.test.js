@@ -26,14 +26,17 @@ describe('Config Merge Loader', function() {
   describe('when called via webapck', function() {
     const options = {
       entry: path.resolve(__dirname, 'cases/test.js'),
+      target: 'node',
       output: {
         filename: 'entry.js',
         path: path.resolve(__dirname, 'dist')
       }
     };
 
+    const compile = webpack(options);
+
     it('should generate an entry.js file', function(done) {
-      webpack(options, function(err, stats) {
+      compile.run(function(err, stats) {
         if(err) return done(err);
 
         assert.ok(fs.existsSync(path.resolve(__dirname, 'dist/entry.js')));
