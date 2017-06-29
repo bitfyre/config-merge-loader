@@ -40,7 +40,7 @@ describe('Config Merge Loader', function() {
       module: {
         rules: [
           {
-            test: /\.json$/,
+            test: /base\.json$/,
             use: [
               {
                 loader: 'config-merge-loader',

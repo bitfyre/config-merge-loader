@@ -6,7 +6,7 @@ module.exports = function(source) {
   const FOOTER = '/**** End Merge Loader ****/';
   const callback = this.async();
   const options = loaderUtils.getOptions(this);
-  let result;
+  let merged = '';
 
   console.log(options.override);
   console.log(path.resolve(__dirname, `test/cases/lib/${options.override}`));
@@ -15,12 +15,11 @@ module.exports = function(source) {
     function(err, result) {
       console.log('Error:', err);
       console.log('Results:', result);
+
+      merged = `${HEADER}\n${result}\n${FOOTER}`;
+
+      callback(null, merged);
     });
 
-  result = `${HEADER}\n${source}\n${FOOTER}`;
-
-
-  callback(null, result);
-
-  return result
+  return merged;
 };
