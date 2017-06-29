@@ -29,7 +29,30 @@ describe('Config Merge Loader', function() {
       target: 'node',
       output: {
         filename: 'entry.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        libraryTarget: 'commonjs2'
+      },
+      resolveLoader: {
+        alias: {
+          'config-merge-loader': path.resolve(__dirname, '../', 'index.js')
+        }
+      },
+      module: {
+        rules: [
+          {
+            test: /\.json$/,
+            use: [
+              {
+                loader: 'config-merge-loader',
+                query: {
+                  override: 'override.json',
+                  resolveTo: path.resolve(__dirname, 'lib')
+                }
+              },
+              'json-loader'
+            ]
+          }
+        ]
       }
     };
 
