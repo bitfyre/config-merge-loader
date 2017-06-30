@@ -40,16 +40,17 @@ describe('Config Merge Loader', function() {
       module: {
         rules: [
           {
+            test: /\.json$/, use: 'json-loader'
+          },
+          {
             test: /base\.json$/,
             use: [
               {
                 loader: 'config-merge-loader',
                 query: {
-                  override: 'override.json',
-                  resolveTo: path.resolve(__dirname, 'lib')
+                  override: 'override.json'
                 }
-              },
-              'json-loader'
+              }
             ]
           }
         ]

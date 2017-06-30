@@ -7,21 +7,21 @@ module.exports = function(source) {
   const FOOTER = '/**** End Merge Loader ****/';
   const callback = this.async();
   const options = loaderUtils.getOptions(this);
-  let mergedModule = '';
+  const thisLoader = this;
+  const overridePath = path.resolve(__dirname,
+    `test/cases/lib/${options.override}`);
 
-  console.log(options.override);
-  console.log(path.resolve(__dirname, `test/cases/lib/${options.override}`));
+  this.cacheable && this.cacheable();
 
-  this.loadModule(path.resolve(__dirname, `test/cases/lib/${options.override}`),
-    function(err, result) {
-      //const merged = ;
-      console.log('Error:', err);
-      console.log('Results:', result);
+  this.loadModule(overridePath,
+    function(err, overrideSource, sourceMap, module) {
+      if (err) { return callback(err); }
+      const override = overrideSource
+        .replace(/^ ?module.exports ?= ?/i, '')
+        .replace(/\;/g, '');
 
-      mergedModule = `${HEADER}\n${result}\n${FOOTER}`;
+      const mergedModule = deepMerge(JSON.parse(source), JSON.parse(override));
 
       callback(null, mergedModule);
     });
-
-  return mergedModule;
 };
