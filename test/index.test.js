@@ -3,6 +3,7 @@ const configMergeLoader = require('../index.js');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
+const rimraf = require('rimraf');
 
 describe('Config Merge Loader', function() {
   it('should return a function', function() {
@@ -23,7 +24,15 @@ describe('Config Merge Loader', function() {
     });
   });
 
-  describe('when called via webapck', function() {
+  describe('when called via webpack', function() {
+    beforeEach(function(done) {
+      rimraf(path.resolve(__dirname, 'dist/entry.js'), function(err) {
+        if (err) { return done(err); }
+
+        done();
+      });
+    });
+
     const options = {
       entry: path.resolve(__dirname, 'cases/test.js'),
       target: 'node',
@@ -64,6 +73,15 @@ describe('Config Merge Loader', function() {
         if(err) return done(err);
 
         assert.ok(fs.existsSync(path.resolve(__dirname, 'dist/entry.js')));
+        done();
+      });
+    });
+
+    it('should compile without errors', function(done) {
+      compile.run(function(err, stats) {
+        if(err) return done(err);
+
+        assert.ok(stats.hasErrors() === false);
         done();
       });
     });
