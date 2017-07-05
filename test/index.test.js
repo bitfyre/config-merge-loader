@@ -142,5 +142,14 @@ describe('Config Merge Loader', function() {
         done();
       });
     });
+
+    it('should compile without errors', function(done) {
+      compile.run(function(err, stats) {
+        if(err) return done(err);
+
+        assert.ok(stats.hasErrors() === false);
+        done();
+      });
+    });
   });
 });
