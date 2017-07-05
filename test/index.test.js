@@ -71,5 +71,22 @@ describe('Config Merge Loader', function() {
         done();
       });
     });
+
+    it('base.js should provide properly merged results', function(done) {
+      compile.run(function(err, stats) {
+        if(err) return done(err);
+
+        const modules = stats.toJson('normal').modules;
+        const moduleIndex = modules.findIndex(function(module) {
+          return module.name === './test/cases/lib/base.json';
+        });
+        const moduleSource = modules[moduleIndex].source;
+        const expectedSource = 'module.exports = {\n\t"a": 2,\n\t"b": ' +
+          '{\n\t\t"a": 2,\n\t\t"b": 1\n\t},\n\t"c": 1\n};';
+
+        assert.equal(moduleSource, expectedSource);
+        done();
+      });
+    });
   });
 });
