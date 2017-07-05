@@ -10,20 +10,6 @@ describe('Config Merge Loader', function() {
     assert.equal(typeof configMergeLoader, 'function');
   });
 
-  describe('when called', function() {
-    const loaderInput = 'Loader Content';
-
-    xit('should return as string', function() {
-      const loaderResult = configMergeLoader(loaderInput);
-      assert.equal(typeof loaderResult, 'string');
-    });
-
-    xit('should return the same string it is given', function() {
-      const loaderResult = configMergeLoader(loaderInput);
-      assert.ok(loaderResult.indexOf(loaderInput) >= 0);
-    });
-  });
-
   describe('when called via webpack', function() {
     beforeEach(function(done) {
       rimraf(path.resolve(__dirname, 'dist/entry.js'), function(err) {
