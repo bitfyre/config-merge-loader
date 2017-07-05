@@ -91,6 +91,49 @@ describe('Config Merge Loader', function() {
   });
 
   describe('when chained with yaml-loader', function() {
+    beforeEach(function(done) {
+      rimraf(path.resolve(__dirname, 'dist/entry-yaml.js'), function(err) {
+        if (err) { return done(err); }
+
+        done();
+      });
+    });
+
+    const options = {
+      entry: path.resolve(__dirname, 'cases/test-yaml.js'),
+      target: 'node',
+      output: {
+        filename: 'entry-yaml.js',
+        path: path.resolve(__dirname, 'dist'),
+        libraryTarget: 'commonjs2'
+      },
+      resolveLoader: {
+        alias: {
+          'config-merge-loader': path.resolve(__dirname, '../', 'index.js')
+        }
+      },
+      module: {
+        rules: [
+          {
+            test: /\.json$/, use: 'json-loader'
+          },
+          {
+            test: /base\.json$/,
+            use: [
+              {
+                loader: 'config-merge-loader',
+                query: {
+                  override: 'override.json'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    const compile = webpack(options);
+
     it('should generate an entry-yaml.js file', function(done) {
       compile.run(function(err, stats) {
         if(err) return done(err);
