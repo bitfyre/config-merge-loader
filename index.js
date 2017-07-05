@@ -3,11 +3,8 @@ const path = require('path');
 const deepMerge = require('./lib/deep-merge');
 
 module.exports = function(source) {
-  const HEADER = '/**** Start Merge Loader ****/';
-  const FOOTER = '/**** End Merge Loader ****/';
   const callback = this.async();
   const options = loaderUtils.getOptions(this);
-  const thisLoader = this;
   const overridePath = path.resolve(__dirname,
     `test/cases/lib/${options.override}`);
 
