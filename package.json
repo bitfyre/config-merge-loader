@@ -16,6 +16,13 @@
   "author": "Alex Lemanski",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^3.4.2"
+    "json-loader": "^0.5.4",
+    "mocha": "^3.4.2",
+    "rimraf": "^2.6.1",
+    "webpack": "^3.0.0",
+    "yaml-loader": "^0.4.0"
+  },
+  "dependencies": {
+    "loader-utils": "^1.1.0"
   }
 }
