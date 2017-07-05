@@ -89,4 +89,15 @@ describe('Config Merge Loader', function() {
       });
     });
   });
+
+  describe('when chained with yaml-loader', function() {
+    it('should generate an entry-yaml.js file', function(done) {
+      compile.run(function(err, stats) {
+        if(err) return done(err);
+
+        assert.ok(fs.existsSync(path.resolve(__dirname, 'dist/entry-yaml.js')));
+        done();
+      });
+    });
+  });
 });
