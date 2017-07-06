@@ -19,6 +19,6 @@ module.exports = function(source) {
 
       const mergedModule = deepMerge(JSON.parse(source), JSON.parse(override));
 
-      callback(null, mergedModule);
+      callback(null, JSON.stringify(mergedModule));
     });
 };
