@@ -115,17 +115,21 @@ describe('Config Merge Loader', function() {
       module: {
         rules: [
           {
-            test: /\.json$/, use: 'json-loader'
+            test: /\.yml$/, use: [
+              { loader: 'json-loader' },
+              { loader: 'yaml-loader' }
+            ]
           },
           {
-            test: /base\.json$/,
+            test: /base\.yml$/,
             use: [
               {
                 loader: 'config-merge-loader',
                 query: {
-                  override: 'override.json'
+                  override: 'override.yml'
                 }
-              }
+              },
+              { loader: 'yaml-loader' }
             ]
           }
         ]
@@ -148,6 +152,23 @@ describe('Config Merge Loader', function() {
         if(err) return done(err);
 
         assert.ok(stats.hasErrors() === false);
+        done();
+      });
+    });
+
+    it('base.js should provide properly merged results', function(done) {
+      compile.run(function(err, stats) {
+        if(err) return done(err);
+
+        const modules = stats.toJson('normal').modules;
+        const moduleIndex = modules.findIndex(function(module) {
+          return module.name === './test/cases/lib/base.yml';
+        });
+        const moduleSource = modules[moduleIndex].source;
+        const expectedSource = 'module.exports = {\n\t"a": 2,\n\t"b": ' +
+          '{\n\t\t"a": 2,\n\t\t"b": 1\n\t},\n\t"c": 1\n};';
+
+        assert.equal(moduleSource, expectedSource);
         done();
       });
     });
