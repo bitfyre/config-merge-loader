@@ -173,4 +173,71 @@ describe('Config Merge Loader', function() {
       });
     });
   });
+
+  describe('when supplied name spaces', function() {
+    beforeEach(function(done) {
+      rimraf(path.resolve(__dirname, 'dist/entry-yaml.js'), function(err) {
+        if (err) { return done(err); }
+
+        done();
+      });
+    });
+
+    const options = {
+      entry: path.resolve(__dirname, 'cases/test-yaml.js'),
+      target: 'node',
+      output: {
+        filename: 'entry-yaml.js',
+        path: path.resolve(__dirname, 'dist'),
+        libraryTarget: 'commonjs2'
+      },
+      resolveLoader: {
+        alias: {
+          'config-merge-loader': path.resolve(__dirname, '../', 'index.js')
+        }
+      },
+      module: {
+        rules: [
+          {
+            test: /\.yml$/, use: [
+              { loader: 'json-loader' },
+              { loader: 'yaml-loader' }
+            ]
+          },
+          {
+            test: /base\-namespaced\.yml$/,
+            use: [
+              {
+                loader: 'config-merge-loader',
+                query: {
+                  defaultNamespace: 'locale',
+                  override: 'override-namespaced.yml',
+                  overrideNamespace: 'override'
+                }
+              },
+              { loader: 'yaml-loader' }
+            ]
+          }
+        ]
+      }
+    };
+
+    const compile = webpack(options);
+    it('should merge the properties under the name space and apply them to ' +
+      'the default namespace', function(done) {
+      if (err) { return done(err); }
+
+      const modules = stats.toJson('normal').modules;
+      const moduleIndex = modules.findIndex(function(module) {
+        return module.name === './test/cases/lib/base.yml';
+      });
+      const moduleSource = modules[moduleIndex].source;
+      const expectedSource = 'module.exports = {\n\t "locale": {\n\t\t"a": 2,' +
+        '\n\t\t"b": {\n\t\t\t"a": 2,\n\t\t\t"b": 1\n\t\t},\n\t\t"c": 1\n\t}\n};';
+
+      assert.equal(moduleSource, expectedSource);
+
+      done();
+    });
+  });
 });
