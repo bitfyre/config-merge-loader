@@ -1,7 +1,11 @@
 {
-  "name": "webpack-config-merge-loader",
-  "version": "0.0.1",
+  "name": "config-merge-loader",
+  "version": "1.0.0-beta.1",
   "description": "Loader for mergeing environment specific localiztion or configuration into a base set at build time.",
+  "homepage": "https://github.com/bitfyre/config-merge-loader/issues",
+  "bugs": {
+    "url": "https://github.com/bitfyre/config-merge-loader/issues"
+  },
   "main": "index.js",
   "scripts": {
     "test": "mocha"
@@ -11,10 +15,20 @@
     "loader",
     "config",
     "locale",
-    "merge"
+    "merge",
+    "yaml",
+    "yml",
+    "json"
   ],
-  "author": "Alex Lemanski",
+  "author": {
+    "name": "Alex Lemanski",
+    "url": "http://bitfyre.net"
+  },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitfyre/config-merge-loader.git"
+  },
   "devDependencies": {
     "json-loader": "^0.5.4",
     "mocha": "^3.4.2",
