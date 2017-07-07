@@ -176,7 +176,7 @@ describe('Config Merge Loader', function() {
 
   describe('when supplied name spaces', function() {
     beforeEach(function(done) {
-      rimraf(path.resolve(__dirname, 'dist/entry-yaml.js'), function(err) {
+      rimraf(path.resolve(__dirname, 'dist/entry-namespace.js'), function(err) {
         if (err) { return done(err); }
 
         done();
@@ -184,10 +184,10 @@ describe('Config Merge Loader', function() {
     });
 
     const options = {
-      entry: path.resolve(__dirname, 'cases/test-yaml.js'),
+      entry: path.resolve(__dirname, 'cases/test-namespace.js'),
       target: 'node',
       output: {
-        filename: 'entry-yaml.js',
+        filename: 'entry-namespace.js',
         path: path.resolve(__dirname, 'dist'),
         libraryTarget: 'commonjs2'
       },
@@ -205,13 +205,13 @@ describe('Config Merge Loader', function() {
             ]
           },
           {
-            test: /base\-namespaced\.yml$/,
+            test: /base\-namespace\.yml$/,
             use: [
               {
                 loader: 'config-merge-loader',
                 query: {
-                  defaultNamespace: 'locale',
-                  override: 'override-namespaced.yml',
+                  baseNamespace: 'locale',
+                  override: 'override-namespace.yml',
                   overrideNamespace: 'override'
                 }
               },
@@ -223,21 +223,42 @@ describe('Config Merge Loader', function() {
     };
 
     const compile = webpack(options);
+
+    it('should generate an entry-namespace.js file', function(done) {
+      compile.run(function(err, stats) {
+        if(err) return done(err);
+
+        assert.ok(fs.existsSync(path.resolve(__dirname, 'dist/entry-namespace.js')));
+        done();
+      });
+    });
+
+    it('should compile without errors', function(done) {
+      compile.run(function(err, stats) {
+        if(err) return done(err);
+
+        assert.ok(stats.hasErrors() === false);
+        done();
+      });
+    });
+
     it('should merge the properties under the name space and apply them to ' +
       'the default namespace', function(done) {
-      if (err) { return done(err); }
+      compile.run(function(err, stats) {
+        if (err) { return done(err); }
 
-      const modules = stats.toJson('normal').modules;
-      const moduleIndex = modules.findIndex(function(module) {
-        return module.name === './test/cases/lib/base.yml';
+        const modules = stats.toJson('normal').modules;
+        const moduleIndex = modules.findIndex(function(module) {
+          return module.name === './test/cases/lib/base-namespace.yml';
+        });
+        const moduleSource = modules[moduleIndex].source;
+        const expectedSource = 'module.exports = {\n\t"locale": {\n\t\t"a": 2,' +
+          '\n\t\t"b": {\n\t\t\t"a": 2,\n\t\t\t"b": 1\n\t\t},\n\t\t"c": 1\n\t}\n};';
+
+        assert.equal(moduleSource, expectedSource);
+
+        done();
       });
-      const moduleSource = modules[moduleIndex].source;
-      const expectedSource = 'module.exports = {\n\t "locale": {\n\t\t"a": 2,' +
-        '\n\t\t"b": {\n\t\t\t"a": 2,\n\t\t\t"b": 1\n\t\t},\n\t\t"c": 1\n\t}\n};';
-
-      assert.equal(moduleSource, expectedSource);
-
-      done();
     });
   });
 });
