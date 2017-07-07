@@ -10,6 +10,13 @@
   "scripts": {
     "test": "mocha"
   },
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "directories": [
+    "test"
+  ],
   "keywords": [
     "webpack",
     "loader",
@@ -38,5 +45,8 @@
   },
   "dependencies": {
     "loader-utils": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=4.0.0 <9.0.0"
   }
 }
