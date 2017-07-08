@@ -145,7 +145,7 @@ Then in your application code you can do the following
 
 **entry.js:**
 
-```
+```javascript
 import config from './base.yml'
 
 const appConfig = JSON.parse(config);
@@ -155,7 +155,7 @@ console.log(appConfig);
 
 Console result:
 
-```
+```javascript
 {
   a: 2,
   b: {
