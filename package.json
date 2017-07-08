@@ -31,6 +31,9 @@
     "name": "Alex Lemanski",
     "url": "http://bitfyre.net"
   },
+  "maintainers": [
+    "Alex Lemanski @bitfyre"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
