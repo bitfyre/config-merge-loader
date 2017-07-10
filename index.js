@@ -5,8 +5,7 @@ const deepMerge = require('./lib/deep-merge');
 module.exports = function(source) {
   const callback = this.async();
   const options = loaderUtils.getOptions(this);
-  const overridePath = path.resolve(__dirname,
-    `test/cases/lib/${options.override}`);
+  const overridePath = path.resolve(this.context, options.override);
 
   this.cacheable && this.cacheable();
 
