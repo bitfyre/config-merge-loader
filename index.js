@@ -2,6 +2,12 @@ const loaderUtils = require('loader-utils');
 const path = require('path');
 const deepMerge = require('./lib/deep-merge');
 
+function _removeModuleSyntax (moduleSource) {
+  return moduleSource
+        .replace(/^ ?module.exports ?= ?/i, '')
+        .replace(/\;/g, '');
+};
+
 module.exports = function(source) {
   const callback = this.async();
   const options = loaderUtils.getOptions(this);
@@ -13,11 +19,8 @@ module.exports = function(source) {
     function(err, overrideSource, sourceMap, module) {
       if (err) { return callback(err); }
 
-      const override = overrideSource
-        .replace(/^ ?module.exports ?= ?/i, '')
-        .replace(/\;/g, '');
-      const baseObj = JSON.parse(source);
-      const overrideObj = JSON.parse(override);
+      const baseObj = JSON.parse(_removeModuleSyntax(source));
+      const overrideObj = JSON.parse(_removeModuleSyntax(overrideSource));
       let mergedModule;
 
       if (!!options.baseNamespace && !!options.overrideNamespace) {
