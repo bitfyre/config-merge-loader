@@ -5,7 +5,7 @@ const deepMerge = require('./lib/deep-merge');
 function _removeModuleSyntax (moduleSource) {
   return moduleSource
         .replace(/^ ?module.exports ?= ?/i, '')
-        .replace(/\;/g, '');
+        .replace(/\;$/g, '');
 };
 
 module.exports = function(source) {
