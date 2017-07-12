@@ -11,27 +11,30 @@ function _removeModuleSyntax (moduleSource) {
 module.exports = function(source) {
   const callback = this.async();
   const options = loaderUtils.getOptions(this);
-  const overridePath = path.resolve(this.context, options.override);
 
   this.cacheable && this.cacheable();
 
-  this.loadModule(overridePath,
-    function(err, overrideSource, sourceMap, module) {
-      if (err) { return callback(err); }
+  if (!!options.override && options.override !== this.resourcePath) {
+    this.loadModule(path.resolve(this.context, options.override),
+      function(err, overrideSource, sourceMap, module) {
+        if (err) { return callback(err); }
 
-      const baseObj = JSON.parse(_removeModuleSyntax(source));
-      const overrideObj = JSON.parse(_removeModuleSyntax(overrideSource));
-      let mergedModule;
+        const baseObj = JSON.parse(_removeModuleSyntax(source));
+        const overrideObj = JSON.parse(_removeModuleSyntax(overrideSource));
+        let mergedModule;
 
-      if (!!options.baseNamespace && !!options.overrideNamespace) {
-        mergedModule = {
-          [options.baseNamespace]: deepMerge(baseObj[options.baseNamespace],
-          overrideObj[options.overrideNamespace])
-        };
-      } else {
-        mergedModule = deepMerge(baseObj, overrideObj);
-      }
+        if (!!options.baseNamespace && !!options.overrideNamespace) {
+          mergedModule = {
+            [options.baseNamespace]: deepMerge(baseObj[options.baseNamespace],
+            overrideObj[options.overrideNamespace])
+          };
+        } else {
+          mergedModule = deepMerge(baseObj, overrideObj);
+        }
 
-      callback(null, JSON.stringify(mergedModule));
-    });
+        callback(null, JSON.stringify(mergedModule));
+      });
+  } else {
+    callback(null, JSON.stringify(source));
+  }
 };
