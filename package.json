@@ -1,6 +1,6 @@
 {
   "name": "config-merge-loader",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "Loader for mergeing environment specific localiztion or configuration into a base set at build time.",
   "homepage": "https://github.com/bitfyre/config-merge-loader/issues",
   "bugs": {
