@@ -35,6 +35,6 @@ module.exports = function(source) {
         callback(null, JSON.stringify(mergedModule));
       });
   } else {
-    callback(null, JSON.stringify(source));
+    callback(null, source);
   }
 };
